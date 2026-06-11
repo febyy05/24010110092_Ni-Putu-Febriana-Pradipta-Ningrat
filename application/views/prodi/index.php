@@ -24,7 +24,7 @@
 				</thead>
 
 				<tbody>
-					<?php foreach ($prodi as $key => $value): ?>
+					<?php foreach ($detailProdi as $key => $value): ?>
 						<tr>
 							<td><?php echo $key + 1 ?>.</td>
 							<td><?php echo $value['prodi_id'] ?></td>
