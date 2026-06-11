@@ -1,143 +1,82 @@
 <div class="row">
-	<div class="col-md-8">
-		<div class="card shadow border-0 mb-4">
+    <div class="col-md-6">
+        <div class="card shadow border-0 mb-4">
 
-			<div class="card-header bg-secondary text-white d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
-				<div>
-					<h5 class="mb-0 fw-bold">
-						<?php echo isset($button) && $button === 'Update' ? 'Ubah Program Studi' : 'Tambah Program Studi'; ?>
-					</h5>
-				</div>
+            <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <?php echo ($button == 'Update') ? 'Ubah Program Studi' : 'Tambah Program Studi'; ?>
+                </h5>
 
-				<a class="btn btn-light" href="<?php echo base_url('prodi') ?>">
-					Kembali
-				</a>
-			</div>
+                <a href="<?php echo base_url('prodi') ?>" class="btn btn-light btn-sm">
+                    Kembali
+                </a>
+            </div>
 
-			<div class="card-body">
+            <div class="card-body">
 
-				<form action="<?php echo $action; ?>" method="post" novalidate>
+                <form action="<?php echo $action; ?>" method="post">
 
-					<div class="mb-3">
-						<label class="form-label">ID Prodi</label>
+                    
+                    <div class="mb-3">
+                        <label>ID Prodi</label>
+                        <input type="number" name="prodi_id"
+                               class="form-control"
+                               value="<?php echo set_value('prodi_id', isset($listProdi['prodi_id']) ? $listProdi['prodi_id'] : '') ?>">
+                        <?php echo form_error('prodi_id', '<small class="text-danger">', '</small>'); ?>
+                    </div>
 
-						<input
-							type="number"
-							name="prodi_id"
-							class="form-control <?php echo form_error('prodi_id') ? 'is-invalid' : ''; ?>"
-							value="<?php echo set_value('prodi_id', isset($prodi['prodi_id']) ? $prodi['prodi_id'] : ''); ?>"
-							placeholder="Masukkan ID Prodi">
+                   
+                    <div class="mb-3">
+                        <label>Fakultas</label>
 
-						<?php if (form_error('prodi_id')): ?>
-							<div class="invalid-feedback">
-								<?php echo form_error('prodi_id'); ?>
-							</div>
-						<?php endif; ?>
-					</div>
+                        <select name="fakultas_id" class="form-select">
+                            <option value="">-- Pilih Fakultas --</option>
 
-					<div class="mb-3">
-						<label class="form-label">Fakultas</label>
+                            <?php foreach ($listFakultas as $fak): ?>
+                                <option value="<?php echo $fak['fakultas_id']; ?>"
+                                    <?php echo set_value('fakultas_id', isset($listProdi['fakultas_id']) ? $listProdi['fakultas_id'] : '') == $fak['fakultas_id'] ? 'selected' : ''; ?>>
+                                    <?php echo $fak['fakultas_name']; ?>
+                                </option>
+                            <?php endforeach; ?>
 
-						<select
-							name="fakultas_id"
-							class="form-select <?php echo form_error('fakultas_id') ? 'is-invalid' : ''; ?>">
+                        </select>
 
-							<option value="">-- Pilih Fakultas --</option>
+                        <?php echo form_error('fakultas_id', '<small class="text-danger">', '</small>'); ?>
+                    </div>
 
-							<?php foreach ($fakultas as $f): ?>
-								<option
-									value="<?php echo $f['fakultas_id']; ?>"
-									<?php echo set_select(
-										'fakultas_id',
-										$f['fakultas_id'],
-										isset($prodi['fakultas_id']) && $prodi['fakultas_id'] == $f['fakultas_id']
-									); ?>>
-									<?php echo $f['fakultas_name']; ?>
-								</option>
-							<?php endforeach; ?>
+                    
+                    <div class="mb-3">
+                        <label>Nama Program Studi</label>
+                        <input type="text" name="prodi_name"
+                               class="form-control"
+                               value="<?php echo set_value('prodi_name', isset($listProdi['prodi_name']) ? $listProdi['prodi_name'] : '') ?>">
+                        <?php echo form_error('prodi_name', '<small class="text-danger">', '</small>'); ?>
+                    </div>
 
-						</select>
+                    
+                    <div class="mb-3">
+                        <label>Strata</label><br>
 
-						<?php if (form_error('fakultas_id')): ?>
-							<div class="invalid-feedback">
-								<?php echo form_error('fakultas_id'); ?>
-							</div>
-						<?php endif; ?>
-					</div>
+                        <input type="radio" name="prodi_strata" value="D3"
+                            <?php echo set_value('prodi_strata', isset($listProdi['prodi_strata']) ? $listProdi['prodi_strata'] : '') == 'D3' ? 'checked' : ''; ?>> D3
 
-					<div class="mb-3">
-						<label class="form-label">Nama Program Studi</label>
+                        <input type="radio" name="prodi_strata" value="S1"
+                            <?php echo set_value('prodi_strata', isset($listProdi['prodi_strata']) ? $listProdi['prodi_strata'] : '') == 'S1' ? 'checked' : ''; ?>> S1
 
-						<input
-							type="text"
-							name="prodi_name"
-							class="form-control <?php echo form_error('prodi_name') ? 'is-invalid' : ''; ?>"
-							value="<?php echo set_value('prodi_name', isset($prodi['prodi_name']) ? $prodi['prodi_name'] : ''); ?>"
-							placeholder="Masukkan Nama Program Studi">
+                        <input type="radio" name="prodi_strata" value="S2"
+                            <?php echo set_value('prodi_strata', isset($listProdi['prodi_strata']) ? $listProdi['prodi_strata'] : '') == 'S2' ? 'checked' : ''; ?>> S2
 
-						<?php if (form_error('prodi_name')): ?>
-							<div class="invalid-feedback">
-								<?php echo form_error('prodi_name'); ?>
-							</div>
-						<?php endif; ?>
-					</div>
+                        <?php echo form_error('prodi_strata', '<br><small class="text-danger">', '</small>'); ?>
+                    </div>
 
-					<div class="mb-3">
-						<label class="form-label d-block">Strata</label>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <?php echo $button; ?>
+                    </button>
 
-						<div class="form-check form-check-inline">
-							<input
-								class="form-check-input"
-								type="radio"
-								name="prodi_strata"
-								value="D3"
-								<?php echo set_radio('prodi_strata', 'D3', isset($prodi['prodi_strata']) && $prodi['prodi_strata'] == 'D3'); ?>>
+                </form>
 
-							<label class="form-check-label">D3</label>
-						</div>
-
-						<div class="form-check form-check-inline">
-							<input
-								class="form-check-input"
-								type="radio"
-								name="prodi_strata"
-								value="S1"
-								<?php echo set_radio('prodi_strata', 'S1', isset($prodi['prodi_strata']) && $prodi['prodi_strata'] == 'S1'); ?>>
-
-							<label class="form-check-label">S1</label>
-						</div>
-
-						<div class="form-check form-check-inline">
-							<input
-								class="form-check-input"
-								type="radio"
-								name="prodi_strata"
-								value="S2"
-								<?php echo set_radio('prodi_strata', 'S2', isset($prodi['prodi_strata']) && $prodi['prodi_strata'] == 'S2'); ?>>
-
-							<label class="form-check-label">S2</label>
-						</div>
-
-						<?php if (form_error('prodi_strata')): ?>
-							<div class="text-danger mt-2">
-								<?php echo form_error('prodi_strata'); ?>
-							</div>
-						<?php endif; ?>
-					</div>
-
-					<div class="d-flex gap-2">
-						<button type="submit" class="btn btn-primary">
-							<?php echo isset($button) ? $button : 'Simpan'; ?>
-						</button>
-
-						<a href="<?php echo base_url('prodi') ?>" class="btn btn-secondary">
-							Batal
-						</a>
-					</div>
-
-				</form>
-
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 </div>
