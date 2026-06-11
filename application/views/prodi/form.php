@@ -16,7 +16,7 @@
 
                 <form action="<?php echo $action; ?>" method="post">
 
-                    
+                    <!-- ID PRODI -->
                     <div class="mb-3">
                         <label>ID Prodi</label>
                         <input type="number" name="prodi_id"
@@ -69,7 +69,7 @@
                         <?php echo form_error('prodi_strata', '<br><small class="text-danger">', '</small>'); ?>
                     </div>
 
-                    
+                    <!-- BUTTON -->
                     <button type="submit" class="btn btn-primary">
                         <?php echo $button; ?>
                     </button>

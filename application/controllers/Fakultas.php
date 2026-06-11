@@ -156,7 +156,7 @@ class Fakultas extends CI_Controller {
         $this->session->set_flashdata('swal', [
             'icon'  => 'success',
             'title' => 'Dihapus!',
-            'text'  => 'Data berhasil dohapus.'
+            'text'  => 'Data berhasil dihapus.'
         ]);
 
         redirect('fakultas');
