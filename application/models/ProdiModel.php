@@ -12,10 +12,10 @@ class ProdiModel extends CI_Model {
         return $this->db->get()->result_array();
     }
 
-    public function getById($id)
+    public function getById($idProdi)
     {
         return $this->db->get_where('prodi', [
-            'prodi_id' => $id
+            'prodi_id' => $idProdi
         ])->row_array();
     }
 
@@ -24,20 +24,20 @@ class ProdiModel extends CI_Model {
         return $this->db->get('fakultas')->result_array();
     }
 
-    public function insert($data)
+    public function insert($dataView)
     {
-        return $this->db->insert('prodi', $data);
+        return $this->db->insert('prodi', $dataView);
     }
 
-    public function update($id, $data)
+    public function update($idProdi, $dataView)
     {
-        $this->db->where('prodi_id', $id);
-        return $this->db->update('prodi', $data);
+        $this->db->where('prodi_id', $idProdi);
+        return $this->db->update('prodi', $dataView);
     }
 
-    public function delete($id)
+    public function delete($idProdi)
     {
-        $this->db->where('prodi_id', $id);
+        $this->db->where('prodi_id', $idProdi);
         return $this->db->delete('prodi');
     }
 }
