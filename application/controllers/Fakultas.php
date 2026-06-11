@@ -8,20 +8,20 @@ class Fakultas extends CI_Controller {
         parent::__construct();
 
         if (!$this->session->userdata('user')) {
-            redirect('auth', 'refresh');
+            redirect('auth');
         }
 
-        $this->load->model('FakultasModel');
+        $this->load->model('fakultasDb');
     }
 
     public function index()
     {
-        $data['fakultas'] = $this->FakultasModel->getAll();
+        $dataView['listFakultas'] = $this->fakultasDb->getAll();
 
-        $header['title'] = "Fakultas";
+        $header['title'] = "Data Fakultas";
 
         $this->load->view('layout/header', $header);
-        $this->load->view('fakultas/index', $data);
+        $this->load->view('fakultas/index', $dataView);
         $this->load->view('layout/footer');
     }
 
@@ -38,19 +38,19 @@ class Fakultas extends CI_Controller {
             $this->form_validation->set_rules(
                 'fakultas_name',
                 'Nama Fakultas',
-                'required|min_length[3]|max_length[100]'
+                'required|min_length[4]|max_length[100]'
             );
 
-            if ($this->form_validation->run() === TRUE) {
+            if ($this->form_validation->run()) {
 
-                $formulir = $this->input->post();
+                $inputData = $this->input->post();
 
-                $data = [
-                    'fakultas_id'   => $formulir['fakultas_id'],
-                    'fakultas_name' => $formulir['fakultas_name']
+                $dataSimpan = [
+                    'fakultas_id'   => $inputData['fakultas_id'],
+                    'fakultas_name' => $inputData['fakultas_name']
                 ];
 
-                $this->FakultasModel->insert($data);
+                $this->fakultasDb->insert($dataSimpan);
 
                 $this->session->set_flashdata('swal', [
                     'icon'  => 'success',
@@ -62,27 +62,27 @@ class Fakultas extends CI_Controller {
             }
         }
 
-        $data['fakultas'] = null;
-        $data['action'] = base_url('fakultas/tambah');
-        $data['button'] = 'Simpan';
+        $dataView['dataFakultas'] = null;
+        $dataView['action'] = base_url('fakultas/tambah');
+        $dataView['button'] = 'Simpan';
 
         $header['title'] = 'Tambah Fakultas';
 
         $this->load->view('layout/header', $header);
-        $this->load->view('fakultas/form', $data);
+        $this->load->view('fakultas/form', $dataView);
         $this->load->view('layout/footer');
     }
 
     public function ubah($id)
     {
-        $fakultas = $this->FakultasModel->getById($id);
+        $detailFakultas = $this->fakultasDb->getById($id);
 
-        if (!$fakultas) {
+        if (empty($detailFakultas)) {
 
             $this->session->set_flashdata('swal', [
-                'icon'  => 'warning',
+                'icon'  => 'error',
                 'title' => 'Tidak Ditemukan!',
-                'text'  => 'Data fakultas tidak ditemukan.'
+                'text'  => 'Data yang dicari tidak tersedia.'
             ]);
 
             redirect('fakultas');
@@ -104,16 +104,16 @@ class Fakultas extends CI_Controller {
 
             if ($this->form_validation->run() === TRUE) {
 
-                $formulir = $this->input->post();
+                $inputData = $this->input->post();
 
-                $data = [
-                    'fakultas_id'   => $formulir['fakultas_id'],
-                    'fakultas_name' => $formulir['fakultas_name']
+                $dataUpdate = [
+                    'fakultas_id'   => $inputData['fakultas_id'],
+                    'fakultas_name' => $inputData['fakultas_name']
                 ];
 
-                $this->FakultasModel->update($id, $data);
+               $this->fakultasDb->update($id, $data);
 
-                $this->session->set_flashdata('swal', [
+               $this->session->set_flashdata('swal', [
                     'icon'  => 'success',
                     'title' => 'Berhasil!',
                     'text'  => 'Data fakultas berhasil diupdate.'
@@ -122,41 +122,41 @@ class Fakultas extends CI_Controller {
                 redirect('fakultas');
             }
 
-            $fakultas = $this->input->post();
+            $detailFakultas = $this->input->post();
         }
 
-        $data['fakultas'] = $fakultas;
-        $data['action'] = base_url('fakultas/ubah/' . $id);
-        $data['button'] = 'Update';
+        $dataView['dataFakultas'] = $detailFakultas;
+        $dataView['action'] = base_url('fakultas/ubah/' . $id);
+        $dataView['button'] = 'Update';
 
-        $header['title'] = 'Ubah Fakultas';
+        $header['title'] = 'Edit Fakultas';
 
         $this->load->view('layout/header', $header);
-        $this->load->view('fakultas/form', $data);
+        $this->load->view('fakultas/form', $dataView);
         $this->load->view('layout/footer');
     }
 
     public function hapus($id)
     {
-        $fakultas = $this->FakultasModel->getById($id);
+        $cekData = $this->fakultasDb->getById($id);
 
-        if (!$fakultas) {
+        if (!$cekData) {
 
-            $this->session->set_flashdata('swal', [
-                'icon'  => 'warning',
-                'title' => 'Tidak Ditemukan!',
-                'text'  => 'Data fakultas tidak ditemukan.'
+         $this->session->set_flashdata('swal', [
+                'icon'  => 'error',
+                'title' => 'Gagal Ditemukan!',
+                'text'  => 'Data tidak ditemukan.'
             ]);
 
             redirect('fakultas');
         }
 
-        $this->FakultasModel->delete($id);
+        $this->fakultasDb->delete($id);
 
         $this->session->set_flashdata('swal', [
-            'icon'  => 'warning',
+            'icon'  => 'success',
             'title' => 'Dihapus!',
-            'text'  => 'Data fakultas berhasil dihapus.'
+            'text'  => 'Data berhasil dohapus.'
         ]);
 
         redirect('fakultas');
