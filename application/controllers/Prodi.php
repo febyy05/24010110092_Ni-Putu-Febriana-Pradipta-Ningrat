@@ -16,7 +16,7 @@ class Prodi extends CI_Controller {
 
     public function index()
     {
-        $dataView['listProdi '] = $this->ProdiModel->getAll();
+        $dataView['listProdi'] = $this->ProdiModel->getAll();
 
         $header['title'] = 'Program Studi';
 
@@ -29,47 +29,28 @@ class Prodi extends CI_Controller {
     {
         if ($this->input->post()) {
 
-            $this->form_validation->set_rules(
-                'prodi_id',
-                'ID Prodi',
-                'required|numeric'
-            );
-
-            $this->form_validation->set_rules(
-                'fakultas_id',
-                'Fakultas',
-                'required'
-            );
-
-            $this->form_validation->set_rules(
-                'prodi_name',
-                'Nama Prodi',
-                'required|min_length[4]|max_length[100]'
-            );
-
-            $this->form_validation->set_rules(
-                'prodi_strata',
-                'Strata',
-                'required'
-            );
+            $this->form_validation->set_rules('prodi_id', 'ID Prodi', 'required|numeric');
+            $this->form_validation->set_rules('fakultas_id', 'Fakultas', 'required');
+            $this->form_validation->set_rules('prodi_name', 'Nama Prodi', 'required|min_length[4]|max_length[100]');
+            $this->form_validation->set_rules('prodi_strata', 'Strata', 'required');
 
             if ($this->form_validation->run() === TRUE) {
 
                 $inputData = $this->input->post();
 
-                $dataView = [
-                    'prodi_id'      => $inputData['prodi_id'],
-                    'fakultas_id'   => $inputData['fakultas_id'],
-                    'prodi_name'    => $inputData['prodi_name'],
-                    'prodi_strata'  => $inputData['prodi_strata']
+                $dataSimpan = [
+                    'prodi_id'     => $inputData['prodi_id'],
+                    'fakultas_id'  => $inputData['fakultas_id'],
+                    'prodi_name'   => $inputData['prodi_name'],
+                    'prodi_strata' => $inputData['prodi_strata']
                 ];
 
-                $this->ProdiModel->insert($dataView);
+                $this->ProdiModel->insert($dataSimpan);
 
-          $this->session->set_flashdata('swal', [
-           'icon' => 'success',
-            'title' => 'Berhasil!',
-           'text' => 'Data berhasil ditambahkan.'
+                $this->session->set_flashdata('swal', [
+                    'icon'  => 'success',
+                    'title' => 'Berhasil!',
+                    'text'  => 'Data berhasil ditambahkan.'
                 ]);
 
                 redirect('prodi');
@@ -95,9 +76,9 @@ class Prodi extends CI_Controller {
         if (!$detailProdi) {
 
             $this->session->set_flashdata('swal', [
-                'icon' => 'warning',
+                'icon'  => 'warning',
                 'title' => 'Tidak Ditemukan!',
-                'text' => 'Program Studi tidak ditemukan.'
+                'text'  => 'Program Studi tidak ditemukan.'
             ]);
 
             redirect('prodi');
@@ -110,23 +91,23 @@ class Prodi extends CI_Controller {
             $this->form_validation->set_rules('prodi_name', 'Nama Prodi', 'required|min_length[4]|max_length[100]');
             $this->form_validation->set_rules('prodi_strata', 'Strata', 'required');
 
-            if ($this->form_validation->run() ) {
+            if ($this->form_validation->run() === TRUE) {
 
                 $inputData = $this->input->post();
 
-                $dataView = [
-                    'prodi_id' => $inputData['prodi_id'],
-                    'fakultas_id' => $inputData['fakultas_id'],
-                    'prodi_name' => $inputData['prodi_name'],
+                $dataUpdate = [
+                    'prodi_id'     => $inputData['prodi_id'],
+                    'fakultas_id'  => $inputData['fakultas_id'],
+                    'prodi_name'   => $inputData['prodi_name'],
                     'prodi_strata' => $inputData['prodi_strata']
                 ];
 
-                $this->ProdiModel->update($idProdi, $dataView);
+                $this->ProdiModel->update($idProdi, $dataUpdate);
 
                 $this->session->set_flashdata('swal', [
-                    'icon' => 'success',
+                    'icon'  => 'success',
                     'title' => 'Berhasil!',
-                    'text' => 'Data berhasil diupdate.'
+                    'text'  => 'Data berhasil diupdate.'
                 ]);
 
                 redirect('prodi');
@@ -149,14 +130,14 @@ class Prodi extends CI_Controller {
 
     public function hapus($idProdi)
     {
-        $detailProdi = $this->ProdiModel->getById($id);
+        $detailProdi = $this->ProdiModel->getById($idProdi);
 
         if (!$detailProdi) {
 
             $this->session->set_flashdata('swal', [
-                'icon' => 'warning',
+                'icon'  => 'warning',
                 'title' => 'Tidak Ditemukan!',
-                'text' => 'Program studi tidak ditemukan.'
+                'text'  => 'Program studi tidak ditemukan.'
             ]);
 
             redirect('prodi');
@@ -165,9 +146,9 @@ class Prodi extends CI_Controller {
         $this->ProdiModel->delete($idProdi);
 
         $this->session->set_flashdata('swal', [
-            'icon' => 'success',
+            'icon'  => 'success',
             'title' => 'Dihapus!',
-            'text' => 'Data berhasil dihapus.'
+            'text'  => 'Data berhasil dihapus.'
         ]);
 
         redirect('prodi');
