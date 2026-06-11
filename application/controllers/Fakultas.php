@@ -11,7 +11,7 @@ class Fakultas extends CI_Controller {
             redirect('auth');
         }
 
-        $this->load->model('fakultasDb');
+        $this->load->model('FakultasModel','fakultasDb');
     }
 
     public function index()
@@ -111,7 +111,7 @@ class Fakultas extends CI_Controller {
                     'fakultas_name' => $inputData['fakultas_name']
                 ];
 
-               $this->fakultasDb->update($id, $data);
+               $this->fakultasDb->update($id, $dataUpdate);
 
                $this->session->set_flashdata('swal', [
                     'icon'  => 'success',
