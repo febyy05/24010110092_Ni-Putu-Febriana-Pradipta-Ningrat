@@ -11,7 +11,7 @@ class FakultasModel extends CI_Model {
     public function getById($id)
     {
         return $this->db->get_where('fakultas', [
-            'fakultas_id' => $id
+            'fakultas_id' => $idFakultas
         ])->row_array();
     }
 
@@ -20,15 +20,15 @@ class FakultasModel extends CI_Model {
         return $this->db->insert('fakultas', $data);
     }
 
-    public function update($id, $data)
+    public function update($idFakultas, $data)
     {
-        $this->db->where('fakultas_id', $id);
+        $this->db->where('fakultas_id', $idFakultas);
         return $this->db->update('fakultas', $data);
     }
 
-    public function delete($id)
+    public function delete($idFakultas)
     {
-        $this->db->where('fakultas_id', $id);
+        $this->db->where('fakultas_id', $idFakultas);
         return $this->db->delete('fakultas');
     }
 
