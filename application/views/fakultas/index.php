@@ -19,7 +19,7 @@
 				</thead>
 
 				<tbody>
-					<?php foreach ($fakultas as $key => $value): ?>
+					<?php foreach ($listFakultas as $key => $value): ?>
 						<tr>
 							<td><?php echo $key + 1 ?>.</td>
 							<td><?php echo $value['fakultas_id'] ?></td>
