@@ -16,12 +16,12 @@ class Prodi extends CI_Controller {
 
     public function index()
     {
-        $data['prodi'] = $this->ProdiModel->getAll();
+        $dataView['listProdi '] = $this->ProdiModel->getAll();
 
         $header['title'] = 'Program Studi';
 
         $this->load->view('layout/header', $header);
-        $this->load->view('prodi/index', $data);
+        $this->load->view('prodi/index', $dataView);
         $this->load->view('layout/footer');
     }
 
@@ -44,7 +44,7 @@ class Prodi extends CI_Controller {
             $this->form_validation->set_rules(
                 'prodi_name',
                 'Nama Prodi',
-                'required|min_length[3]|max_length[100]'
+                'required|min_length[4]|max_length[100]'
             );
 
             $this->form_validation->set_rules(
@@ -55,49 +55,49 @@ class Prodi extends CI_Controller {
 
             if ($this->form_validation->run() === TRUE) {
 
-                $formulir = $this->input->post();
+                $inputData = $this->input->post();
 
-                $data = [
-                    'prodi_id'      => $formulir['prodi_id'],
-                    'fakultas_id'   => $formulir['fakultas_id'],
-                    'prodi_name'    => $formulir['prodi_name'],
-                    'prodi_strata'  => $formulir['prodi_strata']
+                $dataView = [
+                    'prodi_id'      => $inputData['prodi_id'],
+                    'fakultas_id'   => $inputData['fakultas_id'],
+                    'prodi_name'    => $inputData['prodi_name'],
+                    'prodi_strata'  => $inputData['prodi_strata']
                 ];
 
-                $this->ProdiModel->insert($data);
+                $this->ProdiModel->insert($dataView);
 
-                $this->session->set_flashdata('swal', [
-                    'icon' => 'success',
-                    'title' => 'Berhasil!',
-                    'text' => 'Data program studi berhasil ditambahkan.'
+          $this->session->set_flashdata('swal', [
+           'icon' => 'success',
+            'title' => 'Berhasil!',
+           'text' => 'Data berhasil ditambahkan.'
                 ]);
 
                 redirect('prodi');
             }
         }
 
-        $data['prodi'] = null;
-        $data['fakultas'] = $this->ProdiModel->getFakultas();
-        $data['action'] = base_url('prodi/tambah');
-        $data['button'] = 'Simpan';
+        $dataView['listProdi'] = null;
+        $dataView['listFakultas'] = $this->ProdiModel->getFakultas();
+        $dataView['action'] = base_url('prodi/tambah');
+        $dataView['button'] = 'Simpan';
 
-        $header['title'] = 'Tambah Program Studi';
+        $header['title'] = 'Tambah Data Program Studi';
 
         $this->load->view('layout/header', $header);
-        $this->load->view('prodi/form', $data);
+        $this->load->view('prodi/form', $dataView);
         $this->load->view('layout/footer');
     }
 
-    public function ubah($id)
+    public function ubah($idProdi)
     {
-        $prodi = $this->ProdiModel->getById($id);
+        $detailProdi = $this->ProdiModel->getById($idProdi);
 
-        if (!$prodi) {
+        if (!$detailProdi) {
 
             $this->session->set_flashdata('swal', [
                 'icon' => 'warning',
                 'title' => 'Tidak Ditemukan!',
-                'text' => 'Data program studi tidak ditemukan.'
+                'text' => 'Program Studi tidak ditemukan.'
             ]);
 
             redirect('prodi');
@@ -107,67 +107,67 @@ class Prodi extends CI_Controller {
 
             $this->form_validation->set_rules('prodi_id', 'ID Prodi', 'required|numeric');
             $this->form_validation->set_rules('fakultas_id', 'Fakultas', 'required');
-            $this->form_validation->set_rules('prodi_name', 'Nama Prodi', 'required|min_length[3]|max_length[100]');
+            $this->form_validation->set_rules('prodi_name', 'Nama Prodi', 'required|min_length[4]|max_length[100]');
             $this->form_validation->set_rules('prodi_strata', 'Strata', 'required');
 
-            if ($this->form_validation->run() === TRUE) {
+            if ($this->form_validation->run() ) {
 
-                $formulir = $this->input->post();
+                $inputData = $this->input->post();
 
-                $data = [
-                    'prodi_id' => $formulir['prodi_id'],
-                    'fakultas_id' => $formulir['fakultas_id'],
-                    'prodi_name' => $formulir['prodi_name'],
-                    'prodi_strata' => $formulir['prodi_strata']
+                $dataView = [
+                    'prodi_id' => $inputData['prodi_id'],
+                    'fakultas_id' => $inputData['fakultas_id'],
+                    'prodi_name' => $inputData['prodi_name'],
+                    'prodi_strata' => $inputData['prodi_strata']
                 ];
 
-                $this->ProdiModel->update($id, $data);
+                $this->ProdiModel->update($idProdi, $dataView);
 
                 $this->session->set_flashdata('swal', [
                     'icon' => 'success',
                     'title' => 'Berhasil!',
-                    'text' => 'Data program studi berhasil diupdate.'
+                    'text' => 'Data berhasil diupdate.'
                 ]);
 
                 redirect('prodi');
             }
 
-            $prodi = $this->input->post();
+            $detailProdi = $this->input->post();
         }
 
-        $data['prodi'] = $prodi;
-        $data['fakultas'] = $this->ProdiModel->getFakultas();
-        $data['action'] = base_url('prodi/ubah/'.$id);
-        $data['button'] = 'Update';
+        $dataView['listProdi'] = $detailProdi;
+        $dataView['listFakultas'] = $this->ProdiModel->getFakultas();
+        $dataView['action'] = base_url('prodi/ubah/'.$idProdi);
+        $dataView['button'] = 'Update';
 
         $header['title'] = 'Ubah Program Studi';
 
         $this->load->view('layout/header', $header);
-        $this->load->view('prodi/form', $data);
+        $this->load->view('prodi/form', $dataView);
         $this->load->view('layout/footer');
     }
 
-    public function hapus($id)
+    public function hapus($idProdi)
     {
-        $prodi = $this->ProdiModel->getById($id);
+        $detailProdi = $this->ProdiModel->getById($id);
 
-        if (!$prodi) {
+        if (!$detailProdi) {
 
             $this->session->set_flashdata('swal', [
                 'icon' => 'warning',
                 'title' => 'Tidak Ditemukan!',
-                'text' => 'Data program studi tidak ditemukan.'
+                'text' => 'Program studi tidak ditemukan.'
             ]);
 
             redirect('prodi');
         }
 
-        $this->ProdiModel->delete($id);
+        $this->ProdiModel->delete($idProdi);
 
         $this->session->set_flashdata('swal', [
-            'icon' => 'warning',
+            'icon' => 'success',
             'title' => 'Dihapus!',
-            'text' => 'Data program studi berhasil dihapus.'
+            'text' => 'Data berhasil dihapus.'
         ]);
 
         redirect('prodi');
